@@ -91,7 +91,7 @@ Material:
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
-    - _Chopiness: 0.01
+    - _Chopiness: 0.11
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _Cull: 2
@@ -114,14 +114,14 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Size: 20
-    - _Size_black: 18
+    - _Size: 1
+    - _Size_black: 0.8
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _Waves: 0
+    - _Waves: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     - _alpha: 0.85
