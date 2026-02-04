@@ -24,13 +24,13 @@ public class Camera_Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(0))
-        {
+        //if (Input.GetMouseButton(0))
+        //{
             Quaternion camTurnAngle =
                 Quaternion.AngleAxis(Input.GetAxis("Mouse X") * RotationSpeed, Vector3.up);
 
             _cameraOffset = camTurnAngle * _cameraOffset;
-        }
+        //}
 
         Vector3 newPos = target.transform.position + _cameraOffset;
 
