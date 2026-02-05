@@ -89,6 +89,7 @@ Material:
     m_Floats:
     - _Absortion_Coeficient: 0.43
     - _AlphaClip: 0
+    - _Amplitude: 0.5
     - _Blend: 0
     - _BumpScale: 1
     - _Chopiness: 0.11
@@ -108,17 +109,19 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _Length: 2
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Size: 1
-    - _Size_black: 0.8
+    - _Size: 14
+    - _Size_black: 12
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _Speed: 1.5
     - _SrcBlend: 1
     - _Surface: 0
     - _Waves: 1
