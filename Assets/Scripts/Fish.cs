@@ -1,18 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Fish : MonoBehaviour
 {
-    public float speed = 0.3f;
+    public float speed = 0.3f, zigzagSpeed = 8f, zigzagAmplitude = 1f;
     public Vector3[] targets;
     public Vector3[][] targetsPosibles = new Vector3[][]
     {
         new Vector3[]
         {
-            new Vector3(0, 0, 0),
-            new Vector3(0, 0, 10),
-            new Vector3(5, 0, 10)
+            new Vector3(100, 0, 350),
+            new Vector3(350, 0, 350),
+            new Vector3(400, 0, 400)
         },
         //new Vector3[]
         //{
@@ -56,8 +57,19 @@ public class Fish : MonoBehaviour
             return;
         }
 
+        //Mientras no llegue al final, que siga los targets
+
         Vector3 target = targets[actTarget];
-        transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+        //transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
+
+        Vector3 ddir = (target - transform.position).normalized;
+
+        // Perpendicular
+        Vector3 side = Vector3.Cross(Vector3.up, ddir);
+        float zigzag = Mathf.Sin(Time.time * zigzagSpeed) * zigzagAmplitude;
+        Vector3 finalDir = (ddir + side * zigzag).normalized;
+        transform.position += finalDir * speed * Time.deltaTime;
+
 
         if (Vector3.Distance(transform.position, target) < 0.05f)
         {

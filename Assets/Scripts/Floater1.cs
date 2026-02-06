@@ -12,6 +12,7 @@ public class Floater1 : MonoBehaviour
     public float waterDrag = 0.99f;
     public float waterAngularDrag = 0.5f;
     public float debug = -500;
+    public float waterDragAct = 0.99f;
 
     private void FixedUpdate()
     {
@@ -22,8 +23,18 @@ public class Floater1 : MonoBehaviour
         {
             float displacementMultiplier = Mathf.Clamp01((waveHeight - transform.position.y) / depthBeforeSubmerged) * displacementAmount;
             rb.AddForceAtPosition(new Vector3(0f, Mathf.Abs(Physics.gravity.y) * displacementMultiplier, 0f), transform.position, ForceMode.Acceleration);
-            rb.AddForce(displacementMultiplier * -rb.velocity * waterDrag * Time.fixedDeltaTime, ForceMode.VelocityChange);
-            rb.AddTorque(displacementMultiplier * -rb.angularVelocity* waterDrag * Time.fixedDeltaTime, ForceMode.VelocityChange);
+            rb.AddForce(displacementMultiplier * -rb.velocity * waterDragAct * Time.fixedDeltaTime, ForceMode.VelocityChange);
+            rb.AddTorque(displacementMultiplier * -rb.angularVelocity* waterDragAct * Time.fixedDeltaTime, ForceMode.VelocityChange);
         }
+    }
+
+    public void ChangeWaterDrag(float dragChange)
+    {
+        waterDragAct = waterDrag + dragChange;
+    }
+
+    void Awake()
+    {
+        waterDragAct = waterDrag;
     }
 }

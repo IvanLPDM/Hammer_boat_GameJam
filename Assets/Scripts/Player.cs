@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     [Header("Movement")]
     public float forwardForce = 20f;
     public float maxSpeed = 10f;
+    public float forceMinusFishes = 4f;
 
     [Header("Turning")]
     public float turnTorque = 5f;
@@ -22,17 +23,69 @@ public class Player : MonoBehaviour
     public bool dashing = false;
     public float dashTime = 0f;
     public float dashMaxTime = 2f;
+    public float dashTimeMinusFishes = 0.2f;
 
-    Rigidbody rb;
+    [Header("Fish")]
+    public GameObject fish = null;
+    public bool fishing = false;
+    public int numOfFishes = 0;
+    public GameObject visualFish1 = null, visualFish2 = null, visualFish3 = null;
+    private Rigidbody rb;
 
-    void Awake()
+    [Header("Floaters")]
+    public Floater1 floater1 = null;
+    public Floater1 floater2 = null, floater3 = null, floater4 = null;
+    public float dragMinusFishes = 0.5f;
+
+    private void OnTriggerEnter(Collider other)
     {
-        rb = GetComponent<Rigidbody>();
-        rb.maxAngularVelocity = maxAngularSpeed;
+        if (other.CompareTag("Fish"))
+        {
+            fish = other.gameObject;
+            fishing = true;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Fish"))
+        {
+            fish = null;
+            fishing = false;
+        }
+    }
+
+    private void FishesFished()
+    {
+        bool f1 = false, f2 = false, f3 = false;
+        switch (numOfFishes)
+        {
+            case 1: f1 = true; break;
+            case 2: f1 = true; f2 = true; break;
+            case 3: f1 = true; f2 = true; f3 = true; break;
+        }
+
+        visualFish1.gameObject.SetActive(f1);
+        visualFish2.gameObject.SetActive(f2);
+        visualFish3.gameObject.SetActive(f3);
+
+        floater1.ChangeWaterDrag(dragMinusFishes * numOfFishes);
+    }
+
+    private void Pescar()
+    {
+        if (Input.GetMouseButtonDown(1) && fishing)
+        {
+            fish.gameObject.SetActive(false);
+            fishing = false;
+            numOfFishes++;
+            FishesFished();
+        }
     }
 
     private void Movement()
     {
+        float force = forwardForce - forceMinusFishes * numOfFishes;
         // Avanzar
         if (Input.GetKey(KeyCode.W))
         {
@@ -63,8 +116,8 @@ public class Player : MonoBehaviour
             rb.angularVelocity = rb.angularVelocity.normalized * maxAngularSpeed;
         }
 
-        if (!dashing)
-        {
+        //if (!dashing)
+        //{
             // Limitar velocidad lineal
             //if (rb.velocity.magnitude > maxSpeed)
             //{
@@ -73,7 +126,7 @@ public class Player : MonoBehaviour
             //    rb.AddForce(-excess * 0.1f, ForceMode.VelocityChange);
             //    //rb.velocity = Vector3.Lerp(rb.velocity, rb.velocity.normalized * maxSpeed, Time.deltaTime * 5f);
             //}
-        }
+        //}
     }
 
     private void Dash()
@@ -82,6 +135,8 @@ public class Player : MonoBehaviour
         {
             dashing = true;
             dashTime = dashStatus * dashMaxTime;
+            dashTime -= dashTimeMinusFishes;
+            if (dashTime < 0) dashTime = 0;
         }
 
         float time = Time.deltaTime * speedStatus;
@@ -123,15 +178,17 @@ public class Player : MonoBehaviour
         Movement();
     }
 
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
     void Update()
     {
         Dash();
+        Pescar();
+    }
 
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.maxAngularVelocity = maxAngularSpeed;
+        FishesFished();
     }
 }
