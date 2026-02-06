@@ -36,7 +36,15 @@ public class Player : MonoBehaviour
     [Header("Floaters")]
     public Floater1 floater1 = null;
     public Floater1 floater2 = null, floater3 = null, floater4 = null;
-    public float dragMinusFishes = 0.5f;
+    public float dragMinusFishes = 0.2f;
+
+    public int GetNumOfFishes() { return numOfFishes; }
+    
+    public void EntregaPez()
+    {
+        numOfFishes--;
+        FishesFished();
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -57,6 +65,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Siempre se llama esta funcion cuando cambia el numero de peces
     private void FishesFished()
     {
         bool f1 = false, f2 = false, f3 = false;
@@ -72,6 +81,9 @@ public class Player : MonoBehaviour
         visualFish3.gameObject.SetActive(f3);
 
         floater1.ChangeWaterDrag(dragMinusFishes * numOfFishes);
+        floater2.ChangeWaterDrag(dragMinusFishes * numOfFishes);
+        floater3.ChangeWaterDrag(dragMinusFishes * numOfFishes);
+        floater4.ChangeWaterDrag(dragMinusFishes * numOfFishes);
     }
 
     private void Pescar()

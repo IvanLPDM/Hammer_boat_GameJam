@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeInvulnerable: 1
-  speed: 20
+  speed: 15
   zigzagSpeed: 8
   zigzagAmplitude: 0.5
   targets: []

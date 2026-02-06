@@ -13,16 +13,21 @@ public class Floater1 : MonoBehaviour
     public float waterAngularDrag = 0.5f;
     public float debug = -500;
     public float waterDragAct = 0.99f;
+    public float gravityMult = 1f;
+    public float maxForceUp = 20f;
 
     private void FixedUpdate()
     {
-        rb.AddForceAtPosition(Physics.gravity / floaterCount, transform.position, ForceMode.Acceleration);
+        rb.AddForceAtPosition(Physics.gravity / floaterCount * gravityMult, transform.position, ForceMode.Acceleration);
         float waveHeight = WaveManager.instance.GetWaveHeight(transform.position.x, transform.position.z);
         debug = waveHeight;
         if (transform.position.y < waveHeight)
         {
             float displacementMultiplier = Mathf.Clamp01((waveHeight - transform.position.y) / depthBeforeSubmerged) * displacementAmount;
-            rb.AddForceAtPosition(new Vector3(0f, Mathf.Abs(Physics.gravity.y) * displacementMultiplier, 0f), transform.position, ForceMode.Acceleration);
+            float displacement = Mathf.Abs(Physics.gravity.y) * displacementMultiplier;
+            if (displacement > maxForceUp) displacement = maxForceUp;
+
+            rb.AddForceAtPosition(new Vector3(0f, displacement, 0f), transform.position, ForceMode.Acceleration);
             rb.AddForce(displacementMultiplier * -rb.velocity * waterDragAct * Time.fixedDeltaTime, ForceMode.VelocityChange);
             rb.AddTorque(displacementMultiplier * -rb.angularVelocity* waterDragAct * Time.fixedDeltaTime, ForceMode.VelocityChange);
         }

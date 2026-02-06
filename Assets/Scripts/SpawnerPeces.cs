@@ -16,6 +16,7 @@ public class SpawnerPeces : MonoBehaviour
         {
             isSpawning = true;
             remainTime = timeOfSpawn;
+            SliderBarra.instance.SetTimeToFill(timeOfSpawn);
         }
     }
 
@@ -25,6 +26,7 @@ public class SpawnerPeces : MonoBehaviour
         {
             isSpawning = false;
             isSpawned = false;
+            SliderBarra.instance.SetTimeToFill(0);
         }
     }
 
@@ -40,15 +42,7 @@ public class SpawnerPeces : MonoBehaviour
                 isSpawned = true;
                 int num = Random.Range(0, peces.Length - 1);
                 Vector3 pos = transform.position;
-                pos.x += 15; pos.z -= 15;
-                //int posChange = Random.Range(0, 3);
-                //switch (posChange)
-                //{
-                //    case 1: pos.x += 30; break;
-                //    case 2: pos.z -= 30; break;
-                //    case 3: pos.x += 30; pos.z -= 30; break;
-                //    //default: pos.x += 30; pos.z -= 30; break;
-                //}
+                pos.x += 15; pos.z -= 15; // Desde el medio
                 Instantiate(peces[num], pos, Quaternion.identity);
             }
         }
