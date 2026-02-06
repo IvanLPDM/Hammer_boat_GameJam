@@ -5,6 +5,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Fish : MonoBehaviour
 {
+    public float timeInvulnerable = 1f;
     public float speed = 0.3f, zigzagSpeed = 8f, zigzagAmplitude = 1f;
     public Vector3[] targets;
     public Vector3[][] targetsPosibles = new Vector3[][]
@@ -34,6 +35,10 @@ public class Fish : MonoBehaviour
     private float time = 0;
     private float y;
     private float amplitudeFinal = 5;
+    public bool invulnerable = true;
+    public float timeInvulenarbleAct = 0;
+    
+    public bool GetInvulnerability() { return invulnerable; }
 
     private void FishBehaviour()
     {
@@ -86,10 +91,22 @@ public class Fish : MonoBehaviour
                 transform.rotation = Quaternion.LookRotation(dir);
             }
         }
+
+        if (invulnerable)
+        {
+            timeInvulenarbleAct -= Time.deltaTime;
+            if (timeInvulenarbleAct < 0)
+            {
+                timeInvulenarbleAct = 0;
+                invulnerable = false;
+            }
+        }
     }
 
     private void InitFish()
     {
+        invulnerable = true;
+        timeInvulenarbleAct = timeInvulnerable;
         y = transform.position.y;
         int num = Random.Range(0, targetsPosibles.Length);
         targets = targetsPosibles[num];

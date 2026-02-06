@@ -28,9 +28,10 @@ public class Player : MonoBehaviour
     [Header("Fish")]
     public GameObject fish = null;
     public bool fishing = false;
-    public int numOfFishes = 0;
+    public int numOfFishes = 0, maxFishes = 3;
     public GameObject visualFish1 = null, visualFish2 = null, visualFish3 = null;
     private Rigidbody rb;
+    private Fish fsAct = null;
 
     [Header("Floaters")]
     public Floater1 floater1 = null;
@@ -41,6 +42,7 @@ public class Player : MonoBehaviour
     {
         if (other.CompareTag("Fish"))
         {
+            fsAct = other.gameObject.GetComponent<Fish>();
             fish = other.gameObject;
             fishing = true;
         }
@@ -74,12 +76,20 @@ public class Player : MonoBehaviour
 
     private void Pescar()
     {
-        if (Input.GetMouseButtonDown(1) && fishing)
+        if (Input.GetMouseButtonDown(1) && fishing && numOfFishes < maxFishes)
         {
-            fish.gameObject.SetActive(false);
-            fishing = false;
-            numOfFishes++;
-            FishesFished();
+            if (fsAct != null)
+            {
+                bool inv = fsAct.GetInvulnerability();
+                if (!inv)
+                {
+                    fish.gameObject.SetActive(false);
+                    fishing = false;
+                    numOfFishes++;
+                    FishesFished();
+                }
+            }
+
         }
     }
 

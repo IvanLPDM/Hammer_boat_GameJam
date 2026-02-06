@@ -46,10 +46,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f321bf0c01669341a461ea4ead51a47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
+  timeInvulnerable: 1
+  speed: 20
   zigzagSpeed: 8
-  zigzagAmplitude: 1
+  zigzagAmplitude: 0.5
   targets: []
+  invulnerable: 1
+  timeInvulenarbleAct: 0
 --- !u!65 &6330170929025870007
 BoxCollider:
   m_ObjectHideFlags: 0
