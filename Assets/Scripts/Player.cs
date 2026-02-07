@@ -41,6 +41,14 @@ public class Player : MonoBehaviour
     [Header("VFX")]
     public ParticleSystem foamParticles;
     public float minSpeedToEmit = 2f;
+    public float dashParticleDuration;
+
+    public ParticleSystem fail_dash;
+    public ParticleSystem green_dash;
+    public ParticleSystem blue_dash;
+    public ParticleSystem purple_dash;
+
+    public MusicManager musicManager;
 
 
     public int GetNumOfFishes() { return numOfFishes; }
@@ -160,6 +168,7 @@ public class Player : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && !dashing)
         {
+            musicManager.PlayHammer();
             dashing = true;
             dashTime = dashStatus * dashMaxTime;
             dashTime -= dashTimeMinusFishes;
@@ -189,20 +198,60 @@ public class Player : MonoBehaviour
         else
         {
             rb.AddForce(transform.forward * dashSpeedMax * dashStatus, ForceMode.Force);
+
+            musicManager.PlayDash();
+
             dashTime -= Time.deltaTime;
+
+            if (dashTime < 2.0f)
+            {
+                StartCoroutine(PlayForOneSecond(green_dash));
+            }
+            if (dashTime > 2.0f && dashTime < 3.0f)
+            {
+                StartCoroutine(PlayForOneSecond(green_dash));
+            }
+            else if (dashTime >= 3.0f && dashTime < 4.0f)
+            {
+                StartCoroutine(PlayForOneSecond(blue_dash));
+            }
+            else if (dashTime >= 4.0f)
+            {
+                StartCoroutine(PlayForOneSecond(purple_dash));
+            }
+
             if (dashTime <= 0)
             {
                 dashTime = 0;
                 dashing = false;
                 dashStatus = 0f;
                 statusUp = true;
+
+                
             }
+
+            
         }
+    }
+
+    IEnumerator PlayForOneSecond(ParticleSystem ps)
+    {
+        ps.Play();
+        yield return new WaitForSeconds(dashParticleDuration);
+        ps.Stop();
     }
 
     void FixedUpdate()
     {
         Movement();
+    }
+
+    void Start()
+    {
+        green_dash.Stop();
+        fail_dash.Stop();
+        blue_dash.Stop();
+        purple_dash.Stop();
     }
 
     // Update is called once per frame
@@ -212,6 +261,7 @@ public class Player : MonoBehaviour
         Pescar();
 
 
+        //Trail SFX
         if (rb.velocity.magnitude >= minSpeedToEmit)
         {
             if (!foamParticles.isPlaying)
