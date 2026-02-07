@@ -38,6 +38,11 @@ public class Player : MonoBehaviour
     public Floater1 floater2 = null, floater3 = null, floater4 = null;
     public float dragMinusFishes = 0.2f;
 
+    [Header("VFX")]
+    public ParticleSystem foamParticles;
+    public float minSpeedToEmit = 2f;
+
+
     public int GetNumOfFishes() { return numOfFishes; }
     
     public void EntregaPez()
@@ -205,6 +210,18 @@ public class Player : MonoBehaviour
     {
         Dash();
         Pescar();
+
+
+        if (rb.velocity.magnitude >= minSpeedToEmit)
+        {
+            if (!foamParticles.isPlaying)
+                foamParticles.Play();
+        }
+        else
+        {
+            if (foamParticles.isPlaying)
+                foamParticles.Stop();
+        }
     }
 
     void Awake()
