@@ -56,14 +56,19 @@ public class Fish : MonoBehaviour
         }
     };
 
+    public bool invulnerable = true;
+    public float timeInvulenarbleAct = 0;
+    public GameObject circuloCaptura = null;
     private bool final = false;
     private int actTarget = 0;
     private float time = 0;
     private float y;
     private float amplitudeFinal = 5;
-    public bool invulnerable = true;
-    public float timeInvulenarbleAct = 0;
 
+    public void CanCapture(bool capture)
+    {
+        if (!invulnerable) circuloCaptura.SetActive(capture);
+    }
     public int GetFishType() { return fishType; }
     public bool GetInvulnerability() { return invulnerable; }
 
@@ -149,6 +154,8 @@ public class Fish : MonoBehaviour
         targets[0].y = y;
         Vector3 dir = targets[0] - transform.position;
         transform.rotation = Quaternion.LookRotation(dir);
+
+        circuloCaptura.SetActive(false);
     }
 
     void Awake()

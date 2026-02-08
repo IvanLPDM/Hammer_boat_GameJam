@@ -8,8 +8,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3932031116001888450, guid: db2092ef15597da4d9828e78b9286743, type: 3}
+      propertyPath: speed
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3932031116001888450, guid: db2092ef15597da4d9828e78b9286743, type: 3}
       propertyPath: fishType
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3932031116001888450, guid: db2092ef15597da4d9828e78b9286743, type: 3}
+      propertyPath: zigzagSpeed
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3932031116001888450, guid: db2092ef15597da4d9828e78b9286743, type: 3}
       propertyPath: fishSpawnerType

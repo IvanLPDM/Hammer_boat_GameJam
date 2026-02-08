@@ -57,9 +57,16 @@ public class Player : MonoBehaviour
     private MusicManager musicManager;
     private ItemsUI itemsUI;
 
+    public int GetNumOfCoins() { return numCoins; }
     public bool GetIsDashing() { return dashing; }
     public float GetDashTime() {  return dashStatus; }
     public int GetNumOfFishes() { return numOfFishes; }
+
+    public void SubstractCoins(int numCoins)
+    {
+        this.numCoins -= numCoins;
+        FishesFished();
+    }
     
     public void EntregaPez()
     {
@@ -75,6 +82,7 @@ public class Player : MonoBehaviour
         {
             fsAct = other.gameObject.GetComponent<Fish>();
             fish = other.gameObject;
+            fsAct.CanCapture(true);
             fishing = true;
         }
     }
@@ -84,6 +92,7 @@ public class Player : MonoBehaviour
         if (other.CompareTag("Fish"))
         {
             fish = null;
+            fsAct.CanCapture(false);
             fishing = false;
         }
     }

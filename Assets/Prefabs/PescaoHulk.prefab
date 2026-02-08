@@ -60,8 +60,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6330170929025870005, guid: e0ffb967c662627499322b8832ac05b5, type: 3}
+      propertyPath: speed
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6330170929025870005, guid: e0ffb967c662627499322b8832ac05b5, type: 3}
       propertyPath: fishType
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6330170929025870005, guid: e0ffb967c662627499322b8832ac05b5, type: 3}
+      propertyPath: zigzagSpeed
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e0ffb967c662627499322b8832ac05b5, type: 3}

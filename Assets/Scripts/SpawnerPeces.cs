@@ -43,7 +43,7 @@ public class SpawnerPeces : MonoBehaviour
             {
                 remainTime = 0;
                 isSpawned = true;
-                int num = 3;
+                int num = 0;
                 if (firstFish) firstFish = false;
                 else num = Random.Range(0, peces.Length);
 
