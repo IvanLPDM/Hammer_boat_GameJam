@@ -78,6 +78,7 @@ public class End : MonoBehaviour
                 {
                     win = true;
                     entregando = false;
+                    image.gameObject.SetActive(false);
                     SliderBarra.instance.SetTimeToFill(0);
                 }
                 else
