@@ -46,6 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f321bf0c01669341a461ea4ead51a47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fishSpawnerType: 1
+  fishType: 1
   timeInvulnerable: 1
   speed: 15
   zigzagSpeed: 8

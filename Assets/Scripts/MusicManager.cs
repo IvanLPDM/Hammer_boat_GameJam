@@ -8,11 +8,14 @@ public class MusicManager : MonoBehaviour
     public AudioSource[] musica;
     private int audioActI = 0;
 
-    [Header("Audio")]
-    public AudioSource audioSource;
+    [Header("AudioDash")]
+    public AudioSource audioSourceHammer;
+    public AudioClip[] clipsHammer;
     public AudioSource dashAudioSource;
-    public AudioClip[] clips;
-    public AudioClip dash;
+
+    [Header("AudioBucle")]
+    public AudioSource water;
+    public AudioSource gaviolas, madera;
 
     [Header("Pitch")]
     public float minPitch = 0.9f;
@@ -35,12 +38,12 @@ public class MusicManager : MonoBehaviour
 
     void Update()
     {
-        if (audios.Length == 0) return;
-        if (!audios[audioActI].isPlaying)
+        if (musica.Length == 0) return;
+        if (!musica[audioActI].isPlaying)
         {
             audioActI++;
-            if (audioActI == audios.Length) audioActI = 0;
-            audios[audioActI].Play();
+            if (audioActI == musica.Length) audioActI = 0;
+            musica[audioActI].Play();
         }
     }
 
@@ -48,11 +51,11 @@ public class MusicManager : MonoBehaviour
 
     public void PlayHammer()
     {
-        if (clips.Length == 0) return;
+        if (clipsHammer.Length == 0) return;
 
-        audioSource.pitch = Random.Range(minPitch, maxPitch);
-        audioSource.clip = clips[Random.Range(0, clips.Length)];
-        audioSource.Play();
+        audioSourceHammer.pitch = Random.Range(minPitch, maxPitch);
+        audioSourceHammer.clip = clipsHammer[Random.Range(0, clipsHammer.Length)];
+        audioSourceHammer.Play();
     }
 
     public void PlayDash()
