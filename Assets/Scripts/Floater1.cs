@@ -11,16 +11,16 @@ public class Floater1 : MonoBehaviour
     public int floaterCount = 4;
     public float waterDrag = 0.99f;
     public float waterAngularDrag = 0.5f;
-    public float debug = -500;
     public float waterDragAct = 0.99f;
     public float gravityMult = 1f;
     public float maxForceUp = 20f;
+    public float debug = -500;
 
     private void FixedUpdate()
     {
         rb.AddForceAtPosition(Physics.gravity / floaterCount * gravityMult, transform.position, ForceMode.Acceleration);
         float waveHeight = WaveManager.instance.GetWaveHeight(transform.position.x, transform.position.z);
-        debug = waveHeight;
+        
         if (transform.position.y < waveHeight)
         {
             float displacementMultiplier = Mathf.Clamp01((waveHeight - transform.position.y) / depthBeforeSubmerged) * displacementAmount;
