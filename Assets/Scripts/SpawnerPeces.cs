@@ -5,10 +5,13 @@ using UnityEngine;
 public class SpawnerPeces : MonoBehaviour
 {
     public GameObject[] peces;
-    public bool isSpawning = false;
-    public bool isSpawned = false;
     public float timeOfSpawn = 3f;
-    public float remainTime = 0f;
+    public float spawnY = 0f;
+
+    private float remainTime = 0f;
+    private bool isSpawning = false;
+    private bool isSpawned = false;
+    private bool firstFish = true;
 
     public void OnTriggerEnter(Collider other)
     {
@@ -40,8 +43,12 @@ public class SpawnerPeces : MonoBehaviour
             {
                 remainTime = 0;
                 isSpawned = true;
-                int num = Random.Range(0, peces.Length - 1);
+                int num = 0;
+                if (firstFish) firstFish = false;
+                else num = Random.Range(0, peces.Length);
+
                 Vector3 pos = transform.position;
+                pos.y = spawnY;
                 pos.x += 15; pos.z -= 15; // Desde el medio
                 Instantiate(peces[num], pos, Quaternion.identity);
             }

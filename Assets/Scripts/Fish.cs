@@ -5,39 +5,71 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Fish : MonoBehaviour
 {
+    public int fishSpawnerType = 1;
+    public int fishType = 1;
     public float timeInvulnerable = 1f;
     public float speed = 0.3f, zigzagSpeed = 8f, zigzagAmplitude = 1f;
     public Vector3[] targets;
-    public Vector3[][] targetsPosibles = new Vector3[][]
+    public Vector3[][] targetsPosibles1 = new Vector3[][]
     {
         new Vector3[]
         {
-            new Vector3(100, 0, 350),
-            new Vector3(350, 0, 350),
-            new Vector3(400, 0, 400)
+            new Vector3(236, 0, 123),
+            new Vector3(137, 0, 240),
+            new Vector3(10, 0, 193),
+            new Vector3(-82, 0, 334),
+            new Vector3(22, 0, 406),
+            new Vector3(176, 0, 405),
         },
-        //new Vector3[]
-        //{
-        //    new Vector3(0, 0, 0),
-        //    new Vector3(0, 0, 10),
-        //    new Vector3(-40, 0, -40)
-        //},
-        //new Vector3[]
-        //{
-        //    new Vector3(0, 0, 0),
-        //    new Vector3(20, 0, 0),
-        //    new Vector3(40, 0, 40)
-        //}
+        new Vector3[]
+        {
+            new Vector3(492, 0, 10),
+            new Vector3(584, 0, 98),
+            new Vector3(435, 0, 181),
+            new Vector3(613, 0, 353),
+            new Vector3(489, 0, 443),
+            new Vector3(369, 0, 316)
+        }
+    };
+    public Vector3[][] targetsPosibles2 = new Vector3[][]
+    {
+        new Vector3[]
+        {
+            new Vector3(202, 0, -354),
+            new Vector3(413, 0, -276),
+            new Vector3(498, 0, -459),
+            new Vector3(611, 0, -530),
+            new Vector3(487, 0, -685),
+            new Vector3(623, 0, -802),
+            new Vector3(508, 0, -978),
+            new Vector3(313, 0, -1014),
+        },
+        new Vector3[]
+        {
+            new Vector3(156, 0, -704),
+            new Vector3(270, 0, -840),
+            new Vector3(107, 0, -936),
+            new Vector3(-41, 0, -908),
+            new Vector3(-145, 0, -806),
+            new Vector3(-14, 0, -736),
+            new Vector3(-182, 0, -642),
+        }
     };
 
+    public bool invulnerable = true;
+    public float timeInvulenarbleAct = 0;
+    public GameObject circuloCaptura = null;
     private bool final = false;
     private int actTarget = 0;
     private float time = 0;
     private float y;
     private float amplitudeFinal = 5;
-    public bool invulnerable = true;
-    public float timeInvulenarbleAct = 0;
-    
+
+    public void CanCapture(bool capture)
+    {
+        if (!invulnerable) circuloCaptura.SetActive(capture);
+    }
+    public int GetFishType() { return fishType; }
     public bool GetInvulnerability() { return invulnerable; }
 
     private void FishBehaviour()
@@ -108,13 +140,22 @@ public class Fish : MonoBehaviour
         invulnerable = true;
         timeInvulenarbleAct = timeInvulnerable;
         y = transform.position.y;
-        int num = Random.Range(0, targetsPosibles.Length);
-        targets = targetsPosibles[num];
-        targets[0].y = y;
-        
+        if (fishSpawnerType == 1)
+        {
+            int num = Random.Range(0, targetsPosibles1.Length);
+            targets = targetsPosibles1[num];
+        }
+        else if (fishSpawnerType == 2)
+        {
+            int num = Random.Range(0, targetsPosibles2.Length);
+            targets = targetsPosibles2[num];
+        }
 
+        targets[0].y = y;
         Vector3 dir = targets[0] - transform.position;
         transform.rotation = Quaternion.LookRotation(dir);
+
+        circuloCaptura.SetActive(false);
     }
 
     void Awake()

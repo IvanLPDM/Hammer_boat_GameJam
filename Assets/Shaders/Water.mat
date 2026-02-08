@@ -89,7 +89,7 @@ Material:
     m_Floats:
     - _Absortion_Coeficient: 0.43
     - _AlphaClip: 0
-    - _Amplitude: 0.5
+    - _Amplitude: 0.35
     - _Blend: 0
     - _BumpScale: 1
     - _Chopiness: 0.11
