@@ -241,7 +241,6 @@ public class Player : MonoBehaviour
         }
         else
         {
-            rb.AddForce(transform.forward * dashSpeedMax * dashStatus, ForceMode.Force);
 
             dashTime -= Time.deltaTime;
 
@@ -268,11 +267,7 @@ public class Player : MonoBehaviour
                 dashing = false;
                 dashStatus = 0f;
                 statusUp = true;
-
-                
             }
-
-            
         }
     }
 
@@ -286,6 +281,7 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         Movement();
+        if (dashing) rb.AddForce(transform.forward * dashSpeedMax * dashStatus, ForceMode.Force);
     }
 
     // Update is called once per frame
@@ -310,10 +306,10 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        green_dash.Stop();
+        //green_dash.Stop();
         fail_dash.Stop();
-        blue_dash.Stop();
-        purple_dash.Stop();
+        //blue_dash.Stop();
+        //purple_dash.Stop();
 
         musicManager = FindObjectOfType<MusicManager>();
         itemsUI = FindObjectOfType<ItemsUI>();
