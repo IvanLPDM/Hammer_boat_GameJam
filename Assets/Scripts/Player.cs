@@ -59,6 +59,8 @@ public class Player : MonoBehaviour
     private float timeEmission = 2f;
     public float actTimeEmission = 0f;
 
+    [Header("Animations")]
+    public Animator barbaro;
 
     private MusicManager musicManager;
     private ItemsUI itemsUI;
@@ -137,7 +139,7 @@ public class Player : MonoBehaviour
 
     private void Pescar()
     {
-        if (Input.GetMouseButtonDown(1) && fishing && numOfFishes < maxFishes)
+        if (fishing && numOfFishes < maxFishes)
         {
             if (fsAct != null)
             {
@@ -209,6 +211,7 @@ public class Player : MonoBehaviour
         {
 
             StopActivateParticles(false, actDashSec);
+            barbaro.SetTrigger("golpe");
 
             actDashSec = dashesSecs.Length;
             for (int i = 0; i < dashesSecs.Length; ++i) 
