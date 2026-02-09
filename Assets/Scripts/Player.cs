@@ -24,7 +24,9 @@ public class Player : MonoBehaviour
     public float dashTime = 0f;
     public float dashMaxTime = 2f;
     public float dashTimeMinusFishes = 0.2f;
+    public float[] dashsSpeeds = { 10f, 20f, 30f, 50f };
     public float[] dashesSecs = { 0.36f, 0.77f, 0.92f }; // 0.0 - 0.36 - 0.77 - 0.92 - 1.0
+    public int actDashSec = -1;
 
     [Header("Floaters")]
     public Floater1 floater1 = null;
@@ -48,11 +50,17 @@ public class Player : MonoBehaviour
     public ParticleSystem foamParticles;
     public float minSpeedToEmit = 2f;
     public float dashParticleDuration;
-
     public ParticleSystem fail_dash;
     public ParticleSystem green_dash;
     public ParticleSystem blue_dash;
     public ParticleSystem purple_dash;
+    public GameObject fail_object, green_object, blue_object, purple_object;
+    public float yInitPos = 1.35f;
+    private float timeEmission = 2f;
+    public float actTimeEmission = 0f;
+
+    [Header("Animations")]
+    public Animator barbaro;
 
     private MusicManager musicManager;
     private ItemsUI itemsUI;
@@ -131,7 +139,7 @@ public class Player : MonoBehaviour
 
     private void Pescar()
     {
-        if (Input.GetMouseButtonDown(1) && fishing && numOfFishes < maxFishes)
+        if (fishing && numOfFishes < maxFishes)
         {
             if (fsAct != null)
             {
@@ -201,20 +209,24 @@ public class Player : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) && !dashing)
         {
-            //for (int i = dashesSecs.Length - 1; i >= 0; i--)
-            //{
-            //    float actDash = dashesSecs[i];
-            //    if (dashStatus < actDash)
-            //    {
-            //        if (dashesSecs )
-            //        break;
-            //    }
-            //}
+
+            StopActivateParticles(false, actDashSec);
+            barbaro.SetTrigger("golpe");
+
+            actDashSec = dashesSecs.Length;
+            for (int i = 0; i < dashesSecs.Length; ++i) 
+                if (dashStatus < dashesSecs[i]) 
+                    { actDashSec = i;  break; }
+
+            StopActivateParticles(true, actDashSec);
+
+            actTimeEmission = timeEmission;
+
             if (dashStatus > dashesSecs[dashesSecs.Length - 1]) musicManager.PlayDash();
             else musicManager.PlayHammer();
 
             dashing = true;
-            dashTime = dashStatus * dashMaxTime;
+            dashTime = dashMaxTime;
             dashTime -= dashTimeMinusFishes;
             if (dashTime < 0) dashTime = 0;
         }
@@ -225,41 +237,17 @@ public class Player : MonoBehaviour
             if (statusUp)
             {
                 dashStatus += time;
-                if (dashStatus >= 1)
-                {
-                    statusUp = false;
-                }
+                if (dashStatus >= 1) statusUp = false;
             }
             else
             {
                 dashStatus -= time;
-                if (dashStatus <= 0)
-                {
-                    statusUp = true;
-                }
+                if (dashStatus <= 0) statusUp = true;
             }
         }
         else
         {
-
             dashTime -= Time.deltaTime;
-
-            if (dashTime < 2.0f)
-            {
-                StartCoroutine(PlayForOneSecond(green_dash));
-            }
-            if (dashTime > 2.0f && dashTime < 3.0f)
-            {
-                StartCoroutine(PlayForOneSecond(green_dash));
-            }
-            else if (dashTime >= 3.0f && dashTime < 4.0f)
-            {
-                StartCoroutine(PlayForOneSecond(blue_dash));
-            }
-            else if (dashTime >= 4.0f)
-            {
-                StartCoroutine(PlayForOneSecond(purple_dash));
-            }
 
             if (dashTime <= 0)
             {
@@ -271,17 +259,43 @@ public class Player : MonoBehaviour
         }
     }
 
-    IEnumerator PlayForOneSecond(ParticleSystem ps)
+    private void StopActivateParticles(bool activate, int actDashSec)
     {
-        ps.Play();
-        yield return new WaitForSeconds(dashParticleDuration);
-        ps.Stop();
+        GameObject obj = null;
+
+        switch (actDashSec)
+        {
+            case 0: obj = fail_object; break;
+            case 1: obj = blue_object; break;
+            case 2: obj = green_object; break;
+            case 3: obj = purple_object; break;
+        }
+
+        if (obj == null) return;
+
+        Vector3 localPos = obj.transform.localPosition;
+        localPos.y = activate ? yInitPos : 50f;
+        obj.transform.localPosition = localPos;
+    }
+
+    private void Particles()
+    {
+        if (actTimeEmission > 0)
+        {
+            actTimeEmission -= Time.deltaTime;
+            if (actTimeEmission < 0)
+            {
+                StopActivateParticles(false, actDashSec);
+                actTimeEmission = 0;
+            }
+        }
     }
 
     void FixedUpdate()
     {
         Movement();
-        if (dashing) rb.AddForce(transform.forward * dashSpeedMax * dashStatus, ForceMode.Force);
+        if (dashing) rb.AddForce(transform.forward * dashsSpeeds[actDashSec], ForceMode.Force);
+        Particles();
     }
 
     // Update is called once per frame
@@ -306,10 +320,22 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-        //green_dash.Stop();
-        fail_dash.Stop();
-        //blue_dash.Stop();
-        //purple_dash.Stop();
+        green_dash.Play();
+        fail_dash.Play();
+        blue_dash.Play();
+        purple_dash.Play();
+
+
+        StopActivateParticles(true, 0);
+        StopActivateParticles(true, 1);
+        StopActivateParticles(true, 2);
+        StopActivateParticles(true, 3);
+
+        StopActivateParticles(false, 0);
+        StopActivateParticles(false, 1);
+        StopActivateParticles(false, 2);
+        StopActivateParticles(false, 3);
+
 
         musicManager = FindObjectOfType<MusicManager>();
         itemsUI = FindObjectOfType<ItemsUI>();
